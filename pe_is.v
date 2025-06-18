@@ -61,7 +61,7 @@ module mac
         psum_reg <= psum_w;
       end
     end else begin
-      input_reg <= 0;
+      weight_reg <= 0;
       psum_reg <= 0;
     end
   end

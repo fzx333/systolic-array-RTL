@@ -35,21 +35,6 @@ module systolic_array
     .din(weight_in),
     .dout(weight_in_skewed)
   );
-
-  // The second set of registers unskews the output (psum_out)
-  wire signed [PSUM_WIDTH- 1 : 0] psum_out_skewed [ARRAY_HEIGHT - 1 : 0];
-
-  skew_registers
-  #(
-    .DATA_WIDTH(PSUM_WIDTH),
-    .N(ARRAY_HEIGHT)
-  ) psum_out_unskew_registers_inst (
-    .clk(clk),
-    .rst_n(rst_n),
-    .en(process_en),
-    .din(psum_out_skewed),
-    .dout(psum_out)
-  );
   
   // Systolic array
   
@@ -77,9 +62,9 @@ module systolic_array
         if (y == 0) begin
           assign psum_w[x][y] = { PSUM_WIDTH { 1'b0 } };
         end
-        if (y == ARRAY_WIDTH - 1) begin
-          assign psum_out_skewed[x] = psum_w[x][y + 1];
-        end
+        // if (y == ARRAY_WIDTH - 1) begin
+        //   assign psum_out_skewed[x] = psum_w[x][y + 1];
+        // end
         pe_is #(
           .INPUT_WIDTH(INPUT_WIDTH),
           .WEIGHT_WIDTH(WEIGHT_WIDTH),
@@ -99,4 +84,33 @@ module systolic_array
       end
     end
   endgenerate
+
+  // The second set of registers unskews the output (psum_out)
+  wire signed [PSUM_WIDTH- 1 : 0] psum_out_skewed [ARRAY_HEIGHT - 1 : 0];
+  wire signed [PSUM_WIDTH- 1 : 0] psum_out_unskewed [ARRAY_HEIGHT - 1 : 0];
+
+
+  skew_registers
+  #(
+    .DATA_WIDTH(PSUM_WIDTH),
+    .N(ARRAY_HEIGHT)
+  ) psum_out_unskew_registers_inst (
+    .clk(clk),
+    .rst_n(rst_n),
+    .en(process_en),
+    .din(psum_out_skewed),
+    .dout(psum_out_unskewed)
+  );
+
+  // Because the 0th entry in the array must be delayed the most which is
+  // opposite from the way the skew resgiters are generated, so we just
+  // flip the inputs to them
+  genvar y;
+  generate
+    for (x = 0; x < ARRAY_HEIGHT; x++) begin: reverse 
+      assign psum_out_skewed[x] = psum_w[ARRAY_HEIGHT - 1 - x][ARRAY_WIDTH];
+      assign psum_out[x] = psum_out_unskewed[ARRAY_HEIGHT - 1 - x];
+    end
+  endgenerate
+
 endmodule

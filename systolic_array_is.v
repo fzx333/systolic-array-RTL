@@ -49,7 +49,7 @@ module systolic_array
   wire signed [INPUT_WIDTH - 1 : 0] input_w [ARRAY_HEIGHT - 1 : 0][ARRAY_WIDTH : 0];
   wire signed [WEIGHT_WIDTH - 1 : 0] weight_w [ARRAY_HEIGHT: 0][ARRAY_WIDTH - 1 : 0];
   wire signed [PSUM_WIDTH - 1 : 0] psum_w [ARRAY_HEIGHT -1 : 0][ARRAY_WIDTH: 0];
-
+  genvar x, y; 
   generate
     for (x = 0; x < ARRAY_HEIGHT; x = x + 1) begin: row
       for (y = 0; y < ARRAY_WIDTH; y = y + 1) begin: col
@@ -105,7 +105,7 @@ module systolic_array
   // Because the 0th entry in the array must be delayed the most which is
   // opposite from the way the skew resgiters are generated, so we just
   // flip the inputs to them
-  genvar y;
+  genvar x;
   generate
     for (x = 0; x < ARRAY_HEIGHT; x++) begin: reverse 
       assign psum_out_skewed[x] = psum_w[ARRAY_HEIGHT - 1 - x][ARRAY_WIDTH];

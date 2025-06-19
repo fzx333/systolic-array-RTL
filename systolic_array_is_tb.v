@@ -43,7 +43,6 @@ module systolic_array_with_skew_tb;
   initial begin
     clk <= 0;
     rst_n <= 1;
-    for (y = 0; y < `ARRAY_HEIGHT; y = y + 1) weight_wen_r[y] <= 0;
     input_en_r <= 0;
     process_en_r <= 0;
     #20 rst_n <= 0;

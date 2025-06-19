@@ -9,12 +9,12 @@ module systolic_array_with_skew_tb;
   reg clk;
   reg rst_n;
   // reg weight_wen_r [`ARRAY_HEIGHT - 1 : 0];
-  reg [`WEIGHT_WIDTH - 1 : 0] weight_r [`ARRAY_WIDTH - 1 : 0];
+  reg signed [`WEIGHT_WIDTH - 1 : 0] weight_r [`ARRAY_WIDTH - 1 : 0];
   reg input_en_r;
   reg process_en_r;
-  reg [`INPUT_WIDTH - 1 : 0] input_r [`ARRAY_HEIGHT - 1 : 0];
-  // reg [`PSUM_WIDTH - 1 : 0] ofmap_in_r [`ARRAY_WIDTH - 1 : 0];
-  wire [`PSUM_WIDTH - 1 : 0] psum_out_r [`ARRAY_WIDTH - 1 : 0];
+  reg signed [`INPUT_WIDTH - 1 : 0] input_r [`ARRAY_HEIGHT - 1 : 0];
+  // reg signed [`PSUM_WIDTH - 1 : 0] ofmap_in_r [`ARRAY_WIDTH - 1 : 0];
+  wire signed [`PSUM_WIDTH - 1 : 0] psum_out_r [`ARRAY_WIDTH - 1 : 0];
 
   always #10 clk =~clk;
   

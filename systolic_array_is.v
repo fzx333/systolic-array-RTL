@@ -15,7 +15,6 @@ module systolic_array_is
   input input_en,
   input signed [INPUT_WIDTH - 1 : 0] input_in [ARRAY_HEIGHT - 1 : 0],
   input signed [WEIGHT_WIDTH - 1 : 0] weight_in [ARRAY_WIDTH - 1 : 0],
-  // input signed [PSUM_WIDTH - 1 : 0] psum_in [ARRAY_WIDTH - 1 : 0],
   output signed [PSUM_WIDTH - 1 : 0] psum_out [ARRAY_WIDTH - 1 : 0]
 );
 

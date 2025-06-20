@@ -65,13 +65,5 @@ module pe_is
       psum_reg <= 0;
     end
   end
-  /*
-  always @ (posedge clk) begin
-    if (process_en) begin
-      $display("%m, ifmap = %h, weight = %h, psum_in = %h, psum_out = %h", 
-                    input_in,   weight_reg,    psum_in,      psum_w);
-    end
-  end
-  */
-  // Your code ends here
+
 endmodule

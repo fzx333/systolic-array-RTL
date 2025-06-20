@@ -8,12 +8,10 @@ module systolic_array_is_tb;
 
   reg clk;
   reg rst_n;
-  // reg weight_wen_r [`ARRAY_HEIGHT - 1 : 0];
   reg signed [`WEIGHT_WIDTH - 1 : 0] weight_r [`ARRAY_WIDTH - 1 : 0];
   reg input_en_r;
   reg process_en_r;
   reg signed [`INPUT_WIDTH - 1 : 0] input_r [`ARRAY_HEIGHT - 1 : 0];
-  // reg signed [`PSUM_WIDTH - 1 : 0] ofmap_in_r [`ARRAY_WIDTH - 1 : 0];
   wire signed [`PSUM_WIDTH - 1 : 0] psum_out_r [`ARRAY_WIDTH - 1 : 0];
 
   always #10 clk =~clk;
@@ -138,16 +136,8 @@ module systolic_array_is_tb;
     assert(psum_out_r[3] == 13*4 + 14*8 + 15*12 + 16*16);
     #20
     $display("Test finished!");
+    $finish(2);
   end
 
-  initial $monitor("%t: output = %d %d %d %d", $time, psum_out_r[0], psum_out_r[1], psum_out_r[2], psum_out_r[3]);
- 
-//   initial begin
-//     $vcdplusfile("dump.vcd");
-//     $vcdplusmemon();
-//     $vcdpluson(0, systolic_array_with_skew_tb);
-//     #20000000;
-//     $finish(2);
-//   end
 
 endmodule

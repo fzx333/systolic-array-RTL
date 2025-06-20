@@ -13,7 +13,7 @@
 
 
 
-module mac
+module pe_is
 #(
   parameter INPUT_WIDTH = 16,
   parameter WEIGHT_WIDTH = 16,

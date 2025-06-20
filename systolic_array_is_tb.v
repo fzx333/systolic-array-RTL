@@ -4,7 +4,7 @@
 `define ARRAY_HEIGHT 4
 `define ARRAY_WIDTH 4
 
-module systolic_array_with_skew_tb;
+module systolic_array_is_tb;
 
   reg clk;
   reg rst_n;
@@ -18,7 +18,7 @@ module systolic_array_with_skew_tb;
 
   always #10 clk =~clk;
   
-  systolic_array_with_skew
+  systolic_array_is
   #( 
     .INPUT_WIDTH(`INPUT_WIDTH),
     .WEIGHT_WIDTH(`WEIGHT_WIDTH),

@@ -1,7 +1,7 @@
 // This module contains two components: a systolic array of MAC units, and
 // registers that skew the weights going into the systolic array.
 
-module systolic_array
+module systolic_array_is
 #( 
   parameter INPUT_WIDTH = 16,
   parameter WEIGHT_WIDTH = 16,

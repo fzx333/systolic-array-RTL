@@ -23,15 +23,13 @@ module systolic_array_is_tb;
     .PSUM_WIDTH(`PSUM_WIDTH),
     .ARRAY_HEIGHT(`ARRAY_HEIGHT),
     .ARRAY_WIDTH(`ARRAY_WIDTH)
-  ) systolic_array_with_skew_inst (
+  ) systolic_array_is_inst (
     .clk(clk),
     .rst_n(rst_n),
     .process_en(process_en_r),
     .input_en(input_en_r),
-    // .weight_wen(weight_wen_r),
     .input_in(input_r),
     .weight_in(weight_r),
-    // .ofmap_in(ofmap_in_r),
     .psum_out(psum_out_r)
   );
 

@@ -1,4 +1,4 @@
-module en_reg #(parameter DATA_WIDTH) (
+module en_reg #(parameter DATA_WIDTH = 16) (
   input clk,
   input rst_n,
   input en,
@@ -24,7 +24,7 @@ endmodule
 module skew_registers
 #(
   parameter DATA_WIDTH = 16,
-  parameter N = 16
+  parameter N = 4
 )(
   input clk,
   input rst_n,
@@ -40,10 +40,10 @@ module skew_registers
   generate
     for (y = 0; y < N; y = y + 1) begin: row
       for (x = 0; x < y; x = x + 1) begin: col
-        if (x == 0) begin
+        if (x == 0) begin : left
           assign d_w[x][y] = din[y];
         end
-        if (x == y - 1) begin
+        if (x == y - 1) begin : right
           assign dout[y] = d_w[x + 1][y];
         end
         en_reg #(.DATA_WIDTH(DATA_WIDTH)) skew_r (

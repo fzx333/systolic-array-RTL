@@ -1,4 +1,4 @@
-`define PATTERN "/home/eric/INT_FP_MAC/utils/mac_fp16_golden_pattern.txt"
+`define PATTERN "mac_fp16_golden_pattern.txt"
 `define PATTERN_NUM 10
 module mac_tb ;
 //------------------------------------------------------

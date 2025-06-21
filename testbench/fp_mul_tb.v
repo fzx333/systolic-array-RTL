@@ -1,24 +1,22 @@
 `define PATTERN "mul_golden_pattern.txt"
 `define PATTERN_NUM 10
-module int_fp_mul_tb ();
+module fp_mul_tb ();
 
 reg [15:0] input1,input2;
 reg [15:0] expected;
-reg mode;
 reg [48:0] pattern [0:`PATTERN_NUM-1];
 reg [7:0] error_cnt;
-wire error;
 
 integer i;
 
 wire [15:0] result;
-fp_mul u1 (mode,input1,input2,result,error);
+fp_mul u1 (input1,input2,result);
 
 initial begin
     error_cnt = 0;
     #30;
     for(i=0;i<`PATTERN_NUM;i=i+1) begin
-        {input1,input2,expected,mode} = pattern[i];
+        {input1,input2,expected} = pattern[i];
         #10;
         $display("expected: %b actual:%b",expected,result);
         if (expected == result) begin 

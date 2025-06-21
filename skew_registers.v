@@ -29,11 +29,11 @@ module skew_registers
   input clk,
   input rst_n,
   input en,
-  input signed [DATA_WIDTH - 1 : 0] din [N - 1 : 0],
-  output signed [DATA_WIDTH - 1 : 0] dout [N - 1 : 0]
+  input [DATA_WIDTH - 1 : 0] din [N - 1 : 0],
+  output [DATA_WIDTH - 1 : 0] dout [N - 1 : 0]
 );
   
-  wire signed [DATA_WIDTH - 1 : 0] d_w [N : 0][N - 1 : 0];
+  wire [DATA_WIDTH - 1 : 0] d_w [N : 0][N - 1 : 0];
 
   genvar y, x;
 

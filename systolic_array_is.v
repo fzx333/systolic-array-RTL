@@ -13,15 +13,15 @@ module systolic_array_is
   input rst_n,
   input process_en,
   input input_en,
-  input signed [INPUT_WIDTH - 1 : 0] input_in [ARRAY_HEIGHT - 1 : 0],
-  input signed [WEIGHT_WIDTH - 1 : 0] weight_in [ARRAY_WIDTH - 1 : 0],
-  output signed [PSUM_WIDTH - 1 : 0] psum_out [ARRAY_WIDTH - 1 : 0]
+  input [INPUT_WIDTH - 1 : 0] input_in [ARRAY_HEIGHT - 1 : 0],
+  input [WEIGHT_WIDTH - 1 : 0] weight_in [ARRAY_WIDTH - 1 : 0],
+  output [PSUM_WIDTH - 1 : 0] psum_out [ARRAY_WIDTH - 1 : 0]
 );
 
   // Weight skew registers: There are two sets of skew registers, each
   // instantiated in a triangular pattern.
   
-  wire signed [WEIGHT_WIDTH - 1 : 0] weight_in_skewed [ARRAY_WIDTH - 1 : 0];
+  wire [WEIGHT_WIDTH - 1 : 0] weight_in_skewed [ARRAY_WIDTH - 1 : 0];
 
   skew_registers
   #(
@@ -45,9 +45,9 @@ module systolic_array_is
   // on as it moves towards the right. psum_out is the vector of partial sums that
   // is the output of last column of MACs, and it is also the output of the systolic array.
 
-  wire signed [INPUT_WIDTH - 1 : 0] input_w [ARRAY_HEIGHT - 1 : 0][ARRAY_WIDTH : 0];
-  wire signed [WEIGHT_WIDTH - 1 : 0] weight_w [ARRAY_HEIGHT: 0][ARRAY_WIDTH - 1 : 0];
-  wire signed [PSUM_WIDTH - 1 : 0] psum_w [ARRAY_HEIGHT -1 : 0][ARRAY_WIDTH: 0];
+  wire [INPUT_WIDTH - 1 : 0] input_w [ARRAY_HEIGHT - 1 : 0][ARRAY_WIDTH : 0];
+  wire [WEIGHT_WIDTH - 1 : 0] weight_w [ARRAY_HEIGHT: 0][ARRAY_WIDTH - 1 : 0];
+  wire [PSUM_WIDTH - 1 : 0] psum_w [ARRAY_HEIGHT -1 : 0][ARRAY_WIDTH: 0];
   genvar x, y; 
   generate
     for (x = 0; x < ARRAY_HEIGHT; x = x + 1) begin: row
@@ -85,8 +85,8 @@ module systolic_array_is
   endgenerate
 
   // The second set of registers unskews the output (psum_out)
-  wire signed [PSUM_WIDTH- 1 : 0] psum_out_skewed [ARRAY_HEIGHT - 1 : 0];
-  wire signed [PSUM_WIDTH- 1 : 0] psum_out_unskewed [ARRAY_HEIGHT - 1 : 0];
+  wire [PSUM_WIDTH- 1 : 0] psum_out_skewed [ARRAY_HEIGHT - 1 : 0];
+  wire [PSUM_WIDTH- 1 : 0] psum_out_unskewed [ARRAY_HEIGHT - 1 : 0];
 
 
   skew_registers

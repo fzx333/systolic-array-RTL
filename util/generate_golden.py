@@ -40,7 +40,7 @@ def generate_add_golden():
         b_bin =  bin(np.float16(b).view("H"))[2:].zfill(16)
         expected_bin = bin(np.float16(expected).view("H"))[2:].zfill(16)
         golden_list += "{}_{}_{}\n".format(a_bin,b_bin,expected_bin)
-        golden_list_dec += "{}(fp16) + {}(fp16) = {}(fp16)\n".format(a,b,expected) 
+        golden_list_dec += "{}(fp16) + {}(fp16) = {}(fp16)\n".format(a,b,expected)
 
     with open("add_golden_pattern.txt",'w') as f:
         f.write(golden_list)

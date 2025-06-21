@@ -24,7 +24,7 @@ endmodule
 module skew_registers
 #(
   parameter DATA_WIDTH = 16,
-  parameter N = 4
+  parameter N = 16
 )(
   input clk,
   input rst_n,

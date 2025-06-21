@@ -5,9 +5,9 @@ module systolic_array_is
 #( 
   parameter INPUT_WIDTH = 16,
   parameter WEIGHT_WIDTH = 16,
-  parameter PSUM_WIDTH = 32,
-  parameter ARRAY_HEIGHT = 4,
-  parameter ARRAY_WIDTH = 4
+  parameter PSUM_WIDTH = 16,
+  parameter ARRAY_HEIGHT = 16,
+  parameter ARRAY_WIDTH = 16
 )(
   input clk,
   input rst_n,

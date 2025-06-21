@@ -15,7 +15,7 @@ module mac_unit
 	input     [15:0] in_a, // multiplier input1
 	input     [15:0] in_b, // multiplier input2
 	input     [15:0] in_c, // adder input2 ; adder input1 = in_a * in_b
-	output    [15:0] mac_out,
+	output    [15:0] mac_out
 );
 
 	wire [15:0] mul_out;

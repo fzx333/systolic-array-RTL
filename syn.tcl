@@ -20,6 +20,7 @@ read_verilog systolic_array_is.v
 
 current_design systolic_array_is
 
+analyze -format verilog mac/adder/cla_nbit.v
 analyze -format verilog systolic_array_is.v
 # elaborate pe_top_module
 

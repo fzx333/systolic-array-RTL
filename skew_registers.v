@@ -35,40 +35,41 @@ module skew_registers
 
   wire [DATA_WIDTH - 1 : 0] din [N - 1 : 0];
   wire [DATA_WIDTH - 1 : 0] dout [N - 1 : 0];
-
-  integer i;
-  always @(*) begin
-    for (i = 0; i < N; i = i + 1)
-      din[i] = packed_din[i * DATA_WIDTH +: DATA_WIDTH];
-  end
-  always @(*) begin
-    for (i = 0; i < N; i = i + 1)
-      dout[i] = packed_dout[i * DATA_WIDTH +: DATA_WIDTH];
-  end
-  
   wire [DATA_WIDTH - 1 : 0] d_w [N : 0][N - 1 : 0];
+  // Generate unpacked array assignments from flat bus
+  genvar i;
+  generate
+    for (i = 0; i < N; i = i + 1) begin : unpack_loop
+      assign din[i] = packed_din[i * DATA_WIDTH +: DATA_WIDTH];
+    end
+  endgenerate
+  generate
+    for (i = 0; i < N; i = i + 1) begin : unpack_loop
+      assign packed_dout[i * DATA_WIDTH +: DATA_WIDTH] = dout[i];
+    end
+  endgenerate
 
   genvar y, x;
 
   generate
     for (y = 0; y < N; y = y + 1) begin: row
       for (x = 0; x < y; x = x + 1) begin: col
-        // if (x == 0) begin : left
-        //   assign d_w[x][y] = din[y];
-        // end
-        // if (x == y - 1) begin : right
-        //   assign dout[y] = d_w[x + 1][y];
-        // end
-        // en_reg #(.DATA_WIDTH(DATA_WIDTH)) skew_r (
-        //   .clk(clk),
-        //   .rst_n(rst_n),
-        //   .en(en),
-        //   .din(d_w[x][y]),
-        //   .dout(d_w[x + 1][y])
-        // );
+        if (x == 0) begin : left
+          assign d_w[x][y] = din[y];
+        end
+        if (x == y - 1) begin : right
+          assign dout[y] = d_w[x + 1][y];
+        end
+        en_reg #(.DATA_WIDTH(DATA_WIDTH)) skew_r (
+          .clk(clk),
+          .rst_n(rst_n),
+          .en(en),
+          .din(d_w[x][y]),
+          .dout(d_w[x + 1][y])
+        );
       end
     end
   endgenerate
  
-  // assign dout[0] = din[0];
+  assign dout[0] = din[0];
 endmodule

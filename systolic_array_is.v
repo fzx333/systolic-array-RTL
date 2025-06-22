@@ -130,7 +130,7 @@ module systolic_array_is
   generate
     for (x = 0; x < ARRAY_HEIGHT; x = x + 1) begin: reverse 
       assign psum_out_skewed[x] = psum_w[ARRAY_HEIGHT - 1 - x][ARRAY_WIDTH];
-      assign packed_psum_out[PSUM_WIDTH * x +: PSUM_WIDTH] = packed_psum_out_unskewed[(ARRAY_HEIGHT - 1 - x) * PSUM_WIDTH - 1 +: PSUM_WIDTH];
+      assign packed_psum_out[PSUM_WIDTH * x +: PSUM_WIDTH] = packed_psum_out_unskewed[(ARRAY_HEIGHT - 1 - x) * PSUM_WIDTH +: PSUM_WIDTH];
     end
   endgenerate
 

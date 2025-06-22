@@ -6,17 +6,27 @@ module systolic_array_is
   parameter INPUT_WIDTH = 16,
   parameter WEIGHT_WIDTH = 16,
   parameter PSUM_WIDTH = 16,
-  parameter ARRAY_HEIGHT = 16,
-  parameter ARRAY_WIDTH = 16
+  parameter ARRAY_HEIGHT = 4,
+  parameter ARRAY_WIDTH = 4
 )(
   input clk,
   input rst_n,
   input process_en,
   input input_en,
-  input [INPUT_WIDTH - 1 : 0] input_in [ARRAY_HEIGHT - 1 : 0],
-  input [WEIGHT_WIDTH - 1 : 0] weight_in [ARRAY_WIDTH - 1 : 0],
-  output [PSUM_WIDTH - 1 : 0] psum_out [ARRAY_WIDTH - 1 : 0]
+  input [INPUT_WIDTH * ARRAY_HEIGHT - 1 : 0] packed_input_in,
+  input [WEIGHT_WIDTH * ARRAY_WIDTH - 1 : 0] packed_weight_in,
+  output [PSUM_WIDTH * ARRAY_HEIGHT - 1 : 0] packed_psum_out
 );
+  // Verilog does not support two dimensional arrays as ports of modules. 
+  wire [INPUT_WIDTH - 1 : 0] input_in [ARRAY_HEIGHT - 1 : 0];
+  // Generate unpacked array assignments from flat bus
+  genvar i;
+  generate
+    for (i = 0; i < ARRAY_HEIGHT; i = i + 1) begin : unpack_loop1
+      assign input_in[i] = packed_input_in[i * INPUT_WIDTH +: INPUT_WIDTH];
+    end
+  endgenerate
+
 
   // Weight skew registers: There are two sets of skew registers, each
   // instantiated in a triangular pattern.
@@ -31,9 +41,15 @@ module systolic_array_is
     .clk(clk),
     .rst_n(rst_n),
     .en(process_en),
-    .din(weight_in),
-    .dout(weight_in_skewed)
+    .packed_din(packed_weight_in),
+    .packed_dout(packed_weight_in_skewed)
   );
+  // Generate unpacked array assignments from flat bus
+  generate
+    for (i = 0; i < ARRAY_WIDTH; i = i + 1) begin : unpack_loop2
+      assign weight_in_skewed[i] = packed_weight_in_skewed[i * WEIGHT_WIDTH +: WEIGHT_WIDTH];
+    end
+  endgenerate
   
   // Systolic array
   
@@ -85,9 +101,14 @@ module systolic_array_is
   endgenerate
 
   // The second set of registers unskews the output (psum_out)
-  wire [PSUM_WIDTH- 1 : 0] psum_out_skewed [ARRAY_HEIGHT - 1 : 0];
-  wire [PSUM_WIDTH- 1 : 0] psum_out_unskewed [ARRAY_HEIGHT - 1 : 0];
-
+  wire [PSUM_WIDTH - 1 : 0] psum_out_skewed [ARRAY_HEIGHT - 1 : 0];
+  wire [PSUM_WIDTH * ARRAY_HEIGHT - 1 : 0] packed_psum_out_skewed;
+  wire [PSUM_WIDTH * ARRAY_HEIGHT - 1 : 0] psum_out_unskewed;
+  generate
+    for (i = 0; i < ARRAY_HEIGHT; i = i + 1) begin : unpack_loop3
+      assign packed_psum_out_skewed[i * PSUM_WIDTH +: PSUM_WIDTH]  = psum_out_skewed[i];
+    end
+  endgenerate
 
   skew_registers
   #(
@@ -97,8 +118,8 @@ module systolic_array_is
     .clk(clk),
     .rst_n(rst_n),
     .en(process_en),
-    .din(psum_out_skewed),
-    .dout(psum_out_unskewed)
+    .packed_din(psum_out_skewed),
+    .packed_dout(psum_out_unskewed)
   );
 
   // Because the 0th entry in the array must be delayed the most which is
@@ -108,7 +129,7 @@ module systolic_array_is
   generate
     for (x = 0; x < ARRAY_HEIGHT; x = x + 1) begin: reverse 
       assign psum_out_skewed[x] = psum_w[ARRAY_HEIGHT - 1 - x][ARRAY_WIDTH];
-      assign psum_out[x] = psum_out_unskewed[ARRAY_HEIGHT - 1 - x];
+      assign packed_psum_out[PSUM_WIDTH * x +: PSUM_WIDTH] = psum_out_unskewed[(ARRAY_HEIGHT - 1 - x) * PSUM_WIDTH - 1 +: PSUM_WIDTH];
     end
   endgenerate
 

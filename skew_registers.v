@@ -24,7 +24,7 @@ endmodule
 module skew_registers
 #(
   parameter DATA_WIDTH = 16,
-  parameter N = 16
+  parameter N = 4
 )(
   input clk,
   input rst_n,
@@ -39,12 +39,12 @@ module skew_registers
   // Generate unpacked array assignments from flat bus
   genvar i;
   generate
-    for (i = 0; i < N; i = i + 1) begin : unpack_loop
+    for (i = 0; i < N; i = i + 1) begin : unpack_loop1
       assign din[i] = packed_din[i * DATA_WIDTH +: DATA_WIDTH];
     end
   endgenerate
   generate
-    for (i = 0; i < N; i = i + 1) begin : unpack_loop
+    for (i = 0; i < N; i = i + 1) begin : unpack_loop2
       assign packed_dout[i * DATA_WIDTH +: DATA_WIDTH] = dout[i];
     end
   endgenerate

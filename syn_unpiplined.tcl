@@ -30,6 +30,9 @@ create_clock -period 2.5 [get_ports clk]
 # Synthesize the design with timing optimization
 compile_ultra
 
+# Add clock propagation to simulate post-CTS behavior
+set_propagated_clock [get_clocks clk]
+
 # Generate a timing report for the critical paths
 report_timing -delay_type max -path_type full_clock_expanded -max_paths 5
 

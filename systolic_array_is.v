@@ -32,6 +32,7 @@ module systolic_array_is
   // instantiated in a triangular pattern.
   
   wire [WEIGHT_WIDTH - 1 : 0] weight_in_skewed [ARRAY_WIDTH - 1 : 0];
+  wire [WEIGHT_WIDTH * ARRAY_WIDTH - 1 : 0] packed_weight_in_skewed;
 
   skew_registers
   #(

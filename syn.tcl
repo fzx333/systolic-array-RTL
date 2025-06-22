@@ -3,24 +3,24 @@ set target_library  {/var/home/fjy3ws/synopsys/lab02_design_compiler/ref/db_nldm
 set link_library    {* /var/home/fjy3ws/synopsys/lab02_design_compiler/ref/db_nldm/saed14rvt_tt0p8v25c.db }
 
 # Read and analyze the Verilog file
-# read_verilog mac/adder/add_normalizer.v
-# read_verilog mac/adder/alignment.v
-# read_verilog mac/adder/cla_nbit.v
-# read_verilog mac/adder/fp_add.v
-# read_verilog mac/multiplier/fp_mul.v
-# read_verilog mac/multiplier/mul16x16.v
-# read_verilog mac/multiplier/mul2x2.v 
-# read_verilog mac/multiplier/mul4x4.v
-# read_verilog mac/multiplier/mul8x8.v
-# read_verilog mac/multiplier/mul_normalizer.v
-# read_verilog mac/mac/mac_unit.v
+read_verilog mac/adder/add_normalizer.v
+read_verilog mac/adder/alignment.v
+read_verilog mac/adder/cla_nbit.v
+read_verilog mac/adder/fp_add.v
+read_verilog mac/multiplier/fp_mul.v
+read_verilog mac/multiplier/mul16x16.v
+read_verilog mac/multiplier/mul2x2.v 
+read_verilog mac/multiplier/mul4x4.v
+read_verilog mac/multiplier/mul8x8.v
+read_verilog mac/multiplier/mul_normalizer.v
+read_verilog mac/mac/mac_unit.v
 read_verilog skew_registers.v
-# read_verilog pe_is.v
-# read_verilog systolic_array_is.v
+read_verilog pe_is.v
+read_verilog systolic_array_is.v
 
-current_design skew_registers
+current_design systolic_array_is
 
-analyze -format verilog skew_registers.v
+analyze -format verilog systolic_array_is.v
 # elaborate pe_top_module
 
 # Create a clock constraint

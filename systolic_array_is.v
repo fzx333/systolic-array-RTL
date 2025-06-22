@@ -69,13 +69,13 @@ module systolic_array_is
   generate
     for (x = 0; x < ARRAY_HEIGHT; x = x + 1) begin: row
       for (y = 0; y < ARRAY_WIDTH; y = y + 1) begin: col
-        if (y == 0) begin
+        if (y == 0) begin: left1
           assign input_w[x][y] = input_in[x];
         end
-        if (x == 0) begin
+        if (x == 0) begin: top
           assign weight_w[x][y] = weight_in_skewed[y];
         end
-        if (y == 0) begin
+        if (y == 0) begin : left2
           assign psum_w[x][y] = { PSUM_WIDTH { 1'b0 } };
         end
         // if (y == ARRAY_WIDTH - 1) begin
@@ -104,7 +104,7 @@ module systolic_array_is
   // The second set of registers unskews the output (psum_out)
   wire [PSUM_WIDTH - 1 : 0] psum_out_skewed [ARRAY_HEIGHT - 1 : 0];
   wire [PSUM_WIDTH * ARRAY_HEIGHT - 1 : 0] packed_psum_out_skewed;
-  wire [PSUM_WIDTH * ARRAY_HEIGHT - 1 : 0] psum_out_unskewed;
+  wire [PSUM_WIDTH * ARRAY_HEIGHT - 1 : 0] packed_psum_out_unskewed;
   generate
     for (i = 0; i < ARRAY_HEIGHT; i = i + 1) begin : unpack_loop3
       assign packed_psum_out_skewed[i * PSUM_WIDTH +: PSUM_WIDTH]  = psum_out_skewed[i];
@@ -119,8 +119,8 @@ module systolic_array_is
     .clk(clk),
     .rst_n(rst_n),
     .en(process_en),
-    .packed_din(psum_out_skewed),
-    .packed_dout(psum_out_unskewed)
+    .packed_din(packed_psum_out_skewed),
+    .packed_dout(packed_psum_out_unskewed)
   );
 
   // Because the 0th entry in the array must be delayed the most which is
@@ -130,7 +130,7 @@ module systolic_array_is
   generate
     for (x = 0; x < ARRAY_HEIGHT; x = x + 1) begin: reverse 
       assign psum_out_skewed[x] = psum_w[ARRAY_HEIGHT - 1 - x][ARRAY_WIDTH];
-      assign packed_psum_out[PSUM_WIDTH * x +: PSUM_WIDTH] = psum_out_unskewed[(ARRAY_HEIGHT - 1 - x) * PSUM_WIDTH - 1 +: PSUM_WIDTH];
+      assign packed_psum_out[PSUM_WIDTH * x +: PSUM_WIDTH] = packed_psum_out_unskewed[(ARRAY_HEIGHT - 1 - x) * PSUM_WIDTH - 1 +: PSUM_WIDTH];
     end
   endgenerate
 

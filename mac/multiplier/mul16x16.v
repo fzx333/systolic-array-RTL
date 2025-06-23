@@ -1,3 +1,5 @@
+// `define PIPLINE
+
 module mul16x16(
 `ifdef PIPLINE
     input clk,

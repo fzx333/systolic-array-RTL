@@ -11,7 +11,7 @@
 
 // Synchronously reset all registers when rst_n is low.
 
-
+// `define PIPLINE
 
 module pe_is
 #(
@@ -53,6 +53,10 @@ module pe_is
   // Inst MAC unit
 
   mac_unit u0_mac (
+  `ifdef PIPLINE
+		.clk   (clk    ),
+		.rst_n (rst_n  ),
+	`endif 
     .in_a(input_reg),
     .in_b(weight_in),
     .in_c(psum_in),

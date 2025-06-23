@@ -1,3 +1,5 @@
+// `define PIPLINE
+
 module fp_mul (
 `ifdef PIPLINE
     input         clk,

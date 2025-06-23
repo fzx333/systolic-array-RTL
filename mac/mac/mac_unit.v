@@ -5,6 +5,7 @@
 
 	// Function : mac_out = in_a * in_b + in_c.  Work for FP16. Default FP16 are signed number
 
+// `define PIPLINE
 
 module mac_unit
 (
